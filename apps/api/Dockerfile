@@ -1,8 +1,7 @@
 # syntax=docker/dockerfile:1
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 
 WORKDIR /usr/src/app
-RUN npm install -g npm@10.5.1 --ignore-scripts
 
 COPY package*.json ./
 RUN npm ci --ignore-scripts
@@ -12,10 +11,9 @@ COPY nest-cli.json ./
 COPY src ./src
 RUN npm run build
 
-FROM node:20-alpine AS runner
+FROM node:22-alpine AS runner
 WORKDIR /usr/src/app
 ENV NODE_ENV=production
-RUN npm install -g npm@10.5.1 --ignore-scripts
 
 COPY package*.json ./
 RUN npm ci --production --ignore-scripts
